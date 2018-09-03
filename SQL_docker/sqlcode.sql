@@ -11,7 +11,7 @@ insert into t_players VALUES( 'aniess', 'keinert', '21', '1.7');
 
 
 --- halleo Cartelle
-
+---mt
 CREATE TABLE public.stadt
 (
     vorname ,
