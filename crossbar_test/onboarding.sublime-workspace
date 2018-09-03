@@ -1,0 +1,464 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ar",
+				"arry1〔variable〕"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "dockerpublish/Dockerfile",
+			"settings":
+			{
+				"buffer_size": 427,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "dockerpublish/Makefile",
+			"settings":
+			{
+				"buffer_size": 151,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "From crossbario/crossbar\n\nrun for eachArg in sys.argv:   \nrun print(eachArg)\n\n\nRUN apt-get update && apt-get -y upgrade  && apt-get install -y python3-pip python3\nrun  IP= int(sys.argv[1])\nrun -d -p IP:8080 --name=\"crossbar-router\" crossbario/crossbar \n",
+			"file": "/Users/cartelle/projet/crossbar_routeur/Dockerfile",
+			"file_size": 0,
+			"file_write_time": 131799307848081360,
+			"settings":
+			{
+				"buffer_size": 253,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\n\n\n# fehler docker image nicht genannt\n-docker run -d -p 8000:80 --name=\"crossbar-router\"  ici ne marche pas car le premier argument est  obligatoire et le deuxieme optionnel\n\n\n-docker run -d -p 8000:80  crossbario/crossbar : on le faire sans nom\n-docker stop brave_kilby: le croosbar etant crée avec un nom alleatoire on le stoppe\n-docker rm brave_kilby: on stoppe et on l'efface de la memoire\nrun -d -p 8000:8080 --name=\"crossbar-router\" crossbario/crossbar \n-run -d -p 8080:8080 --name=\"crossbar-router\" crossbario/crossbar : on recree en donnant le nom et en changeant le port\n",
+			"file": "/Users/cartelle/projet/crossbar_routeur/README.md",
+			"file_size": 0,
+			"file_write_time": 131799309549668192,
+			"settings":
+			{
+				"buffer_size": 581,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publish.py",
+			"settings":
+			{
+				"buffer_size": 5049,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "import numpy as np \nimport math\nimport random \n#import sys\n\n#for eachArg in sys.argv:   \n    #print(eachArg)\n\n\n\n\n\n\ndef generate_randlist(N,min_int,max_int):\n\tlistint =[]\n\tfor i in range(N):\n\t\tlistint.append(random.randint(min_int,max_int))\n\treturn(listint)\n\n\t\n\n#N= int(sys.argv[1])\n#min_int = int(sys.argv[2])\n#max_int = int(sys.argv[3])\n\n\n\n#matrix operations\n#tableau = np.zeros((2,3), dtype =\"i\") cf dataFrame pandas\n\n\n\n\n#tableau = np.random.randint(1,10)\n\n\n\n\n\n\n#def arrysort(tableau):\ntab1 =[]\ntab2 =[]\ntableau = generate_randlist(100,1,50)\nprint(\"my tab ist \\n\", tableau)\n\nfor i in range(len(tableau)):\n\tif tableau[i] % 2 == 0:\n\t\ttab1.append(tableau[i])\n\telse:\n\t\ttab2.append(tableau[i])\n\n\nprint(\"arry of pair \\n \",tab1, \" \\n arry of impair \\n\",tab2)\n#print(\"the inverse of pai array ist \\n \", reversed(tab1))\n\n\n#print(\" the sort array of impair Arry ist \\n\", tab2.sort())\n\n\n\n#arry2 = generate_number(50,1,100)\n#print(reversed(arry2))\n#print(arry2.sort())\n#print(arry3)\n#print(arry1)\n\n\n\n\n\n\n# print(arry1.max())\n# print(arry1.min())\n# arry1.argmin()\n# arry1.argmax()\n# np.all(arry1 = 5)\n# np.any(aryy1 !=5)\n\n\n# matrix \n\n#data = np.loadtxt('data/populations.txt')\n",
+			"file": "/Users/cartelle/projet/sortAlgo/arryOperations.py",
+			"file_size": 1164,
+			"file_write_time": 131794221504084414,
+			"settings":
+			{
+				"buffer_size": 1165,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"gitgutter",
+				"GitGutter: Support Info"
+			],
+			[
+				"package control: REPL",
+				"Package Control: Enable Package"
+			],
+			[
+				" css",
+				"Set Syntax: CSS"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/cartelle/projet",
+		"/Users/cartelle/projet/crossbar_test",
+		"/Users/cartelle/projet/crossbar_test/dockerpublish",
+		"/Users/cartelle/projet/partialsum"
+	],
+	"file_history":
+	[
+		"/Users/cartelle/projet/crossbar_routeur/Makefile",
+		"/Users/cartelle/projet/crossbar_test/README.md",
+		"/Users/cartelle/projet/class/basesoveriading.py",
+		"/Users/cartelle/projet/crossbar_test/dockerpublish/publish.py",
+		"/Users/cartelle/projet/partialsum/affiche.py",
+		"/Users/cartelle/projet/crossbar_test/clarifycrossbar.py",
+		"/Users/cartelle/projet/crossbar_test/dockerpublish/Dockerfile",
+		"/Users/cartelle/projet/crossbar_test/dockerpublish/Makefile",
+		"/Users/cartelle/projet/crossbar_test/dockersubcription/Dockerfile",
+		"/Users/cartelle/projet/crossbar_test/dockerregister/Dockerfile",
+		"/Users/cartelle/projet/crossbar_test/argparseExample.py",
+		"/Users/cartelle/projet/crossbar_test/dockerregister/Makefile",
+		"/Users/cartelle/projet/crossbar_test/dockersubscription/Makefile",
+		"/Users/cartelle/projet/docker/partialsum.py",
+		"/Users/cartelle/projet/docker/Dockerfile",
+		"/Users/cartelle/projet/crossbar_test/Dockerfile",
+		"/Users/cartelle/projet/crossbar_test/subscription.py",
+		"/Users/cartelle/projet/crossbar_test/calls.py",
+		"/Users/cartelle/projet/crossbar_test/register.py",
+		"/Users/cartelle/Library/Application Support/Sublime Text 3/Packages/User/SideBarEnhancements/Open With/Side Bar.sublime-menu",
+		"/Users/cartelle/projet/pandasDataframe/README.md",
+		"/Users/cartelle/projet/partialsum/partialsum.py",
+		"/Users/cartelle/projet/partialsum/README.md",
+		"/Users/cartelle/projet/partialsum/tests.py",
+		"/Users/cartelle/projet/partialsum/tests3.py",
+		"/Users/cartelle/Downloads/google-cloud-sdk/install.sh"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "dockerpublish/Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 427,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								323,
+								323
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Dockerfile Syntax Highlighting/Syntaxes/Dockerfile.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "dockerpublish/Makefile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 151,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103,
+								103
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Makefile/Makefile.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/cartelle/projet/crossbar_routeur/Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 253,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								24,
+								24
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Dockerfile Syntax Highlighting/Syntaxes/Dockerfile.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/cartelle/projet/crossbar_routeur/README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 581,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								177,
+								177
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "publish.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5049,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3173,
+								3173
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"git_gutter_is_enabled": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 571.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/Users/cartelle/projet/sortAlgo/arryOperations.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1165,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								755,
+								755
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"git_gutter_is_enabled": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "onboarding.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/git/REpi/REpi.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 317.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
