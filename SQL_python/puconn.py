@@ -175,7 +175,8 @@ if __name__ == '__main__':
     print ('parse command line parameters')
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output.')
-    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
+    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:5432/ws')
+    #parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
 #    parser.add_argument('--router', type=six.text_type,default=u'ws://104.199.76.81:8080/ws',help='WAMP router URL.')
  
 #    parser.add_argument('--realm',type=six.text_type, default='realm1',help='WAMP router realm.')
