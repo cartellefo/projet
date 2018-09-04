@@ -78,6 +78,10 @@ class Zaehler(ApplicationSession):
             hello(args)
             print(args) 
 
+
+
+            
+
         def connect():
             
             conn = None
@@ -101,7 +105,7 @@ class Zaehler(ApplicationSession):
                     print('Database connection closed.')
 
 
-        #######################################################################
+        
 
         def insert_vendor(vendor_name):
             """ insert a new vendor into the vendors table """
