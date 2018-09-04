@@ -31,10 +31,10 @@ import argparse
 import six
 import txaio
 import json
-import numpy 
+import numpy
 import sys
-from twisted.internet.defer import inlineCallbacks, returnValue
-from autobahn.twisted.util import sleep 
+from twisted.internet.defer import inlineCallbacks
+from autobahn.twisted.util import sleep
 from datetime import datetime
 from twisted.internet.task import LoopingCall
 from twisted.internet import reactor
@@ -43,6 +43,7 @@ from twisted.logger import Logger
 
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
+
 class Zaehler(ApplicationSession):
 
     def onConnect(self):
@@ -50,43 +51,42 @@ class Zaehler(ApplicationSession):
         self.join(self.config.realm, [u'anonymous'])
 
     def onChallenge(self, challenge):
-        self.log.info("Challenge for method {authmethod} received", authmethod=challenge.method)
+        self.log.info(
+            "Challenge for method {authmethod} received", authmethod=challenge.method)
         raise Exception("We haven't asked for authentication!")
 
-    @inlineCallbacks
+    # @inlineCallbacks
     def onJoin(self, details):
         print('on join')
 
         @inlineCallbacks
         def _do():
             #uu = numpy.random.normal(0, 2)
-            
-         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'}) 
-            yield self.publish(u'repi.data.simple.gaussian', 'hi') #{'tsp': datetime.utcnow().isoformat(), 'piid':'none'}, {'excludeMe': False})  
-            yield sleep(1)   
-            returnValue(2)
+
+         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'})
+            # {'tsp': datetime.utcnow().isoformat(), 'piid':'none'}, {'excludeMe': False})
+            yield self.publish(u'repi.data.simple.gaussian', 'hi')
+            yield sleep(1)
+            return 2
 
         @inlineCallbacks
         def _do2():
-            #uu = numpy.random.normal(0, 2)
-            
-         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'}) 
-            self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'piid':'none'})    
-            yield sleep(1) 
+            # uu = numpy.random.normal(0, 2)
+
+         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'})
+            self.publish(u'repi.data.simple.gaussian', {
+                         'tsp': datetime.utcnow().isoformat(), 'piid': 'none'})
+            yield sleep(1)
             return(1)
 
             hello(args)
-            print(args) 
-
-
-
-
+            print(args)
 
         def connect():
-            
+
             conn = None
             try:
-                
+
                 print('Connecting to the PostgreSQL database...')
                 conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
                 cur = conn.cursor()
@@ -94,8 +94,7 @@ class Zaehler(ApplicationSession):
                 cur.execute('SELECT version()')
                 db_version = cur.fetchone()
                 print(db_version)
-               
-             
+
                 cur.close()
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
@@ -104,9 +103,6 @@ class Zaehler(ApplicationSession):
                     conn.close()
                     print('Database connection closed.')
 
-
-        
-
         def insert_vendor(vendor_name):
             """ insert a new vendor into the vendors table """
             sql = """INSERT INTO vendors(vendor_name)
@@ -114,42 +110,42 @@ class Zaehler(ApplicationSession):
             conn = None
             vendor_id = None
             try:
-                
-                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
-                
+
+                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' port='5432' password='dbpass'")
+
                 cur = conn.cursor()
-                
+
                 cur.execute(sql, (vendor_name,))
-                
+
                 vendor_id = cur.fetchone()[0]
-                
+
                 conn.commit()
-                
+
                 cur.close()
             except (Exception, psycopg2.DatabaseError) as error:
                 print(error)
             finally:
                 if conn is not None:
                     conn.close()
-         
+
             return vendor_id
 
         connect()
-        insert_vendor('cartelle inc')    
-# sub = yield self.subscribe(onhello, 'com.example.onhello')       
+        insert_vendor('cartelle inc')
+        # sub = yield self.subscribe(onhello, 'com.example.onhello')
 
-# sub = yield self.subscribe(onhello, 'com.example.onhello')
-        
+        # sub = yield self.subscribe(onhello, 'com.example.onhello')
+
         print('Starte Messung')
 
-  #      self.lc = LoopingCall(_do)
-  #      self.lc.start(1)
-        i=0
+        #      self.lc = LoopingCall(_do)
+        #      self.lc.start(1)
+        i = 0
 
        # while i < 10:
-            #yield self.publish(u'repi.data.simple.gaussian', 'hi')
-        yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'piid':'aussen!'})    
-            
+        # yield self.publish(u'repi.data.simple.gaussian', 'hi')
+        yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'piid': 'aussen!'})
+
         yield _do2()
         print('hi')
         yield _do2()
@@ -158,9 +154,17 @@ class Zaehler(ApplicationSession):
         print('hi')
         yield _do2()
         print('him')
-        i=i+1
+        i = i+1
 
-        
+
+
+
+
+
+
+
+       # 
+
     def onLeave(self, details):
         self.log.info('session left: {}'.format(details))
 
@@ -172,15 +176,18 @@ class Zaehler(ApplicationSession):
 
 if __name__ == '__main__':
 
-    print ('parse command line parameters')
+    print('parse command line parameters')
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output.')
-    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:5432/ws')
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Enable debug output.')
+    parser.add_argument('--url', dest='url', type=six.text_type,
+                        default=u'ws://localhost:8080/ws')
     #parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
-#    parser.add_argument('--router', type=six.text_type,default=u'ws://104.199.76.81:8080/ws',help='WAMP router URL.')
- 
-#    parser.add_argument('--realm',type=six.text_type, default='realm1',help='WAMP router realm.')
-    parser.add_argument('--realm', dest='realm', type=six.text_type, default='realm1', help='The realm to join (default: "realm1").')
+    #    parser.add_argument('--router', type=six.text_type,default=u'ws://104.199.76.81:8080/ws',help='WAMP router URL.')
+
+    #    parser.add_argument('--realm',type=six.text_type, default='realm1',help='WAMP router realm.')
+    parser.add_argument('--realm', dest='realm', type=six.text_type,
+                        default='realm1', help='The realm to join (default: "realm1").')
 
     args = parser.parse_args()
     print(args)
@@ -188,5 +195,3 @@ if __name__ == '__main__':
     runner = ApplicationRunner(url=args.url, realm=args.realm)
     print(runner)
     runner.run(Zaehler, auto_reconnect=True)
-
-
