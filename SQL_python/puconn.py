@@ -103,35 +103,35 @@ class Zaehler(ApplicationSession):
 
         #######################################################################
 
-        # def insert_vendor(vendor_name):
-        #     """ insert a new vendor into the vendors table """
-        #     sql = """INSERT INTO vendors(vendor_name)
-        #              VALUES(%s) RETURNING vendor_id;"""
-        #     conn = None
-        #     vendor_id = None
-        #     try:
+        def insert_vendor(vendor_name):
+            """ insert a new vendor into the vendors table """
+            sql = """INSERT INTO vendors(vendor_name)
+                     VALUES(%s) RETURNING vendor_id;"""
+            conn = None
+            vendor_id = None
+            try:
                 
-        #         conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
+                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
                 
-        #         cur = conn.cursor()
+                cur = conn.cursor()
                 
-        #         cur.execute(sql, (vendor_name,))
+                cur.execute(sql, (vendor_name,))
                 
-        #         vendor_id = cur.fetchone()[0]
+                vendor_id = cur.fetchone()[0]
                 
-        #         conn.commit()
+                conn.commit()
                 
-        #         cur.close()
-        #     except (Exception, psycopg2.DatabaseError) as error:
-        #         print(error)
-        #     finally:
-        #         if conn is not None:
-        #             conn.close()
+                cur.close()
+            except (Exception, psycopg2.DatabaseError) as error:
+                print(error)
+            finally:
+                if conn is not None:
+                    conn.close()
          
-        #     return vendor_id
+            return vendor_id
 
-        # connect()
-        # insert_vendor('cartelle inc')    
+        connect()
+        insert_vendor('cartelle inc')    
 # sub = yield self.subscribe(onhello, 'com.example.onhello')       
 
 # sub = yield self.subscribe(onhello, 'com.example.onhello')
