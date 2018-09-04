@@ -78,7 +78,7 @@ class Zaehler(ApplicationSession):
             hello(args)
             print(args) 
 
-def connect():
+        def connect():
             
             conn = None
             try:
