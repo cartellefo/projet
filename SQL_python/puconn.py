@@ -80,7 +80,7 @@ class Zaehler(ApplicationSession):
 
 
 
-            
+
 
         def connect():
             
@@ -157,7 +157,7 @@ class Zaehler(ApplicationSession):
         yield _do2()
         print('hi')
         yield _do2()
-        print('hi')
+        print('him')
         i=i+1
 
         
