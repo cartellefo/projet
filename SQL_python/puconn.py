@@ -26,6 +26,7 @@
 #
 ###############################################################################
 #import psycopg2
+import time
 import os
 import argparse
 import six
@@ -55,116 +56,43 @@ class Zaehler(ApplicationSession):
             "Challenge for method {authmethod} received", authmethod=challenge.method)
         raise Exception("We haven't asked for authentication!")
 
-    # @inlineCallbacks
+    @inlineCallbacks
     def onJoin(self, details):
         print('on join')
 
         @inlineCallbacks
-        def _do():
-            #uu = numpy.random.normal(0, 2)
+        def _cpuload():
+            start = time.time()
+            print(' please give me the CPU time')
+            end = time.time()
+            elapsed = end - start
 
-         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'})
-            # {'tsp': datetime.utcnow().isoformat(), 'piid':'none'}, {'excludeMe': False})
-            yield self.publish(u'repi.data.simple.gaussian', 'hi')
+            my_payload = {
+                         'tsp': datetime.utcnow().isoformat(), 
+                         'piid': 'none', 
+                         'elapsed': elapsed
+                         }
+
+            print('sending payload:  {}'.format(my_payload))
+            yield self.publish(u'repi.data.simple.gaussian', my_payload)
+
+            #print('cpu time is ',elapsed)
             yield sleep(1)
-            return 2
-
-        @inlineCallbacks
-        def _do2():
-            # uu = numpy.random.normal(0, 2)
-
-         #   yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'val':uu, 'piid':'none'})
-            self.publish(u'repi.data.simple.gaussian', {
-                         'tsp': datetime.utcnow().isoformat(), 'piid': 'none'})
-            yield sleep(1)
-            return(1)
-
-            hello(args)
-            print(args)
-
-        def connect():
-
-            conn = None
-            try:
-
-                print('Connecting to the PostgreSQL database...')
-                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
-                cur = conn.cursor()
-                print('PostgreSQL database version:')
-                cur.execute('SELECT version()')
-                db_version = cur.fetchone()
-                print(db_version)
-
-                cur.close()
-            except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
-            finally:
-                if conn is not None:
-                    conn.close()
-                    print('Database connection closed.')
-
-        def insert_vendor(vendor_name):
-            """ insert a new vendor into the vendors table """
-            sql = """INSERT INTO vendors(vendor_name)
-                     VALUES(%s) RETURNING vendor_id;"""
-            conn = None
-            vendor_id = None
-            try:
-
-                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' port='5432' password='dbpass'")
-
-                cur = conn.cursor()
-
-                cur.execute(sql, (vendor_name,))
-
-                vendor_id = cur.fetchone()[0]
-
-                conn.commit()
-
-                cur.close()
-            except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
-            finally:
-                if conn is not None:
-                    conn.close()
-
-            return vendor_id
-
-        connect()
-        insert_vendor('cartelle inc')
-        # sub = yield self.subscribe(onhello, 'com.example.onhello')
-
-        # sub = yield self.subscribe(onhello, 'com.example.onhello')
+            return(elapsed)
+            
 
         print('Starte Messung')
-
-        #      self.lc = LoopingCall(_do)
-        #      self.lc.start(1)
         i = 0
 
-       # while i < 10:
-        # yield self.publish(u'repi.data.simple.gaussian', 'hi')
-        yield self.publish(u'repi.data.simple.gaussian', {'tsp': datetime.utcnow().isoformat(), 'piid': 'aussen!'})
-
-        yield _do2()
-        print('hi')
-        yield _do2()
-        print('hi')
-        yield _do2()
-        print('hi')
-        yield _do2()
-        print('him')
-        i = i+1
+        while i < 100:
+            yield _cpuload()
+            # print('cpu time is ', _cpuload())
+            # yield _do2()
+            yield sleep(1)
+            i = i+1
 
 
-
-
-
-
-
-
-       # 
-
+       
     def onLeave(self, details):
         self.log.info('session left: {}'.format(details))
 
@@ -178,14 +106,9 @@ if __name__ == '__main__':
 
     print('parse command line parameters')
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help='Enable debug output.')
-    parser.add_argument('--url', dest='url', type=six.text_type,
-                        default=u'ws://localhost:8080/ws')
-    #parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
-    #    parser.add_argument('--router', type=six.text_type,default=u'ws://104.199.76.81:8080/ws',help='WAMP router URL.')
-
-    #    parser.add_argument('--realm',type=six.text_type, default='realm1',help='WAMP router realm.')
+    parser.add_argument('-d', '--debug', action='store_true',help='Enable debug output.')
+    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
+   
     parser.add_argument('--realm', dest='realm', type=six.text_type,
                         default='realm1', help='The realm to join (default: "realm1").')
 

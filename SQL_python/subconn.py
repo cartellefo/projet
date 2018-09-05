@@ -25,7 +25,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
-
+import psycopg2
 import os
 import argparse
 import six
@@ -57,82 +57,83 @@ class Zaehler(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
         print('on join')
-
+        try:
+            conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
+            cur = conn.cursor()
+            print('Connection was successful. ')
+        except Exception as e:
+            raise e
         #hhier muss code für subscriptioon hin
 
         
-        def onhello(msg):
-            print("event for 'onhello' received: {}".format(msg))
-            return(1)
+        def onMessage(msg):
+            print("event for 'onMessage' received: {}".format(msg))
 
-        sub = yield self.subscribe(onhello,u'repi.data.simple.gaussian')
-        print("subscribed to topic 'onhello'")
-        onhello('hi1')
-        #####################
+            
+            
+            #cur.execute("""INSERT INTO vendors(vendor_name) VALUES(%s) RETURNING vendor_id;""", (str(msg['elapsed']),))
+            #vendor_id = cur.fetchone()[0]
+  
+            # füge die Daten aus dem msg dict in die Datenbank ein
+            #"insert into mytable (elapsedspalte) values (" + str(msg['elapsed']) + ")"
+
+            #cur.execute("insert into vendors(vendor_name) values (" + str(msg['elapsed']) + ")")
+           
+            sql = """INSERT INTO vendors (vendor_name) VALUES(%s) """
+            print (sql, str(msg['elapsed']))
+            cur.execute(sql,(msg['elapsed'],))
+            #id = cur.fetchone()[0]
+            conn.commit()
+            #cur.close()
+            #conn.close()
 
         
 
-        def get_parts():
-    
-            conn = None
-            try:
-               
-                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
-                cur = conn.cursor()
-                cur.execute("SELECT part_id, part_name FROM parts ORDER BY part_name")
-                rows = cur.fetchall()
-                print("The number of parts: ", cur.rowcount)
-                for row in rows:
-                    print(row)
-                cur.close()
-            except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
-            finally:
-                if conn is not None:
-                    conn.close()
+            return(1)
 
 
-        def iter_row(cursor, size=10):
-            while True:
-                rows = cursor.fetchmany(size)
-                if not rows:
-                    break
-                for row in rows:
-                    yield row
+        sub = yield self.subscribe(onMessage, u'repi.data.simple.gaussian')
+        print("subscribed to topic 'onhello'")
+
+
+        
+
+
+###############################################
+        
+        # def insert_vendor(vendor_name):
+            
+        #     sql = """INSERT INTO vendors(vendor_name)
+        #              VALUES(%s) RETURNING vendor_id;"""
+        #     conn = None
+        #     vendor_id = None
+        #     try:
                 
-
-
-
-
-        def get_part_vendors():
-            """ query part and vendor data from multiple tables"""
-            conn = None
-            try:
+        #         conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
+        #         # conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' port='5432' password='dbpass'")
+        #         cur = conn.cursor()
+                
+        #         cur.execute(sql, (vendor_name,))
+                
+        #         vendor_id = cur.fetchone()[0]
                
-                conn = psycopg2.connect("dbname='postgres' user='postgres' host='localhost' password='dbpass'")
-                cur = conn.cursor()
-                cur.execute("""
-                    SELECT part_name, vendor_name
-                    FROM parts
-                    INNER JOIN vendor_parts ON vendor_parts.part_id = parts.part_id
-                    INNER JOIN vendors ON vendors.vendor_id = vendor_parts.vendor_id
-                    ORDER BY part_name;
-                """)
-                for row in iter_row(cur, 10):
-                    print(row)
-                cur.close()
-            except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
-            finally:
-                if conn is not None:
-                    conn.close()
-
-        get_parts()
-        get_part_vendors()  
-
+        #         conn.commit()
+               
+        #         cur.close()
+        #     except (Exception, psycopg2.DatabaseError) as error:
+        #         print(error)
+        #     finally:
+        #         if conn is not None:
+        #             conn.close()
          
+        #     return vendor_id
 
-    ######
+        # connect()
+        # insert_vendor('brice')
+
+
+
+    #############
 
     def onLeave(self, details):
         self.log.info('session left: {}'.format(details))
