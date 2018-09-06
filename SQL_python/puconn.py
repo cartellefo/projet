@@ -61,12 +61,12 @@ class Zaehler(ApplicationSession):
         print('on join')
 
         @inlineCallbacks
-        def _cpuload():
+        def _cpuload(): # fonction to calculated the cpu time
             start = time.time()
             print(' please give me the CPU time')
             end = time.time()
-            elapsed = end - start
-
+            elapsed = end - start # cpu time 
+            # my_payload is the data to published
             my_payload = {
                          'tsp': datetime.utcnow().isoformat(), 
                          'piid': 'none', 
@@ -74,7 +74,7 @@ class Zaehler(ApplicationSession):
                          }
 
             print('sending payload:  {}'.format(my_payload))
-            yield self.publish(u'repi.data.simple.gaussian', my_payload)
+            yield self.publish(u'repi.data.simple.gaussian', my_payload)# publisher my_payload
 
             #print('cpu time is ',elapsed)
             yield sleep(1)

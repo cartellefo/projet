@@ -53,7 +53,7 @@ class Zaehler(ApplicationSession):
     def onChallenge(self, challenge):
         self.log.info("Challenge for method {authmethod} received", authmethod=challenge.method)
         raise Exception("We haven't asked for authentication!")
-
+    # connection fo subcriber to data base
     @inlineCallbacks
     def onJoin(self, details):
         print('on join')
@@ -63,31 +63,42 @@ class Zaehler(ApplicationSession):
             print('Connection was successful. ')
         except Exception as e:
             raise e
-        #hhier muss code für subscriptioon hin
+        
 
         
-        def onMessage(msg):
-            print("event for 'onMessage' received: {}".format(msg))
+        def onMessage(msg): ## msg: this is the msg received fom publisher
+            print("event for 'onMessage' received: {}".format(msg))# print ... message from publisher
 
+        ################## register ###############    
             
-            
-            #cur.execute("""INSERT INTO vendors(vendor_name) VALUES(%s) RETURNING vendor_id;""", (str(msg['elapsed']),))
-            #vendor_id = cur.fetchone()[0]
-  
-            # füge die Daten aus dem msg dict in die Datenbank ein
-            #"insert into mytable (elapsedspalte) values (" + str(msg['elapsed']) + ")"
 
-            #cur.execute("insert into vendors(vendor_name) values (" + str(msg['elapsed']) + ")")
+            cur.execute("SELECT vendor_id, vendor_name FROM vendors ORDER BY vendor_name")
+            print("The number of parts: ", cur.rowcount)
+            row = cur.fetchone()
+     
+            while row is not None:
+                print(row)
+                row = cur.fetchone()
+                
+
+        ########################## publish##############################################    
            
-            sql = """INSERT INTO vendors (vendor_name) VALUES(%s) """
-            print (sql, str(msg['elapsed']))
-            cur.execute(sql,(msg['elapsed'],))
-            #id = cur.fetchone()[0]
-            conn.commit()
+            # sql = """INSERT INTO vendors (vendor_name) VALUES(%s) """
+            # print (sql, str(msg['elapsed']))# 
+            # cur.execute(sql,(msg['elapsed'],))
+            
+            # conn.commit()
+        #################### test ##############################    
             #cur.close()
             #conn.close()
 
-        
+            # sql =""" INSERT INTO t_players (vorname, nachname, p_alter, koerpergroesse )VALUES"""
+            
+            # cur.execute(sql,('Rébecca', 'Armand',  24, 160),
+            # ('Aimée', 'Hebert',  36, 170),
+            # ('Marielle', 'Ribeiro', 27, 180),
+            # ('Hilaire', 'Savary', 58, 110))
+            # conn.commit()
 
             return(1)
 
