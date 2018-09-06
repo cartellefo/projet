@@ -25,7 +25,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
-import psycopg2
+
 import os
 import argparse
 import six
@@ -95,23 +95,28 @@ class Zaehler(ApplicationSession):
 
         def read_msg(msg):
             print("event for read_msg send: {}".format(msg))
-            # cur.execute("""SELECT vendor_name FROM vendors WHERE vendor_id =10 """)
-            # x= cur.fetchone()[0]
-            # print(x)
-
-            
-            sql = """SELECT vendor_id, vendor_name FROM vendors ORDER BY vendor_name limit 10 """
+            sql = """SELECT vendor_name FROM vendors  WHERE vendor_id <=100 """
+            #sql = """SELECT p_alter FROM t_players  WHERE p_alter <=100 """
             cur.execute(sql)
-            print("The number of parts: ", cur.rowcount)
-            row = cur.fetchall()
-            print(row)
+            #row = cur.fetchall()
+            #print(row)
+            #cur.execute("""SELECT vendor_name FROM vendors WHERE vendor_id =10 """)
+            x = cur.fetchall()
+            print(x)
+############################################################################################################
+          
+            #sql = """SELECT vendor_id, vendor_name FROM vendors ORDER BY vendor_name limit (%s)) """
+            #cur.execute(sql, msg ...) # 
+            #print("The number of parts: ", cur.rowcount)
+            #row = cur.fetchall()
+            #print(row)
             #rows=row
             #while row is not None:
             #    print(row)
             #    row = cur.fetchone()
-            
+########################################################################################################            
 
-            return(row)
+            return(x)
         read_msg('hello')
 
         reg = yield self.register(read_msg, u'repi.data.select')

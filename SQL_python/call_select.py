@@ -25,7 +25,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
-#import psycopg2
+
 import os
 import argparse
 import six
@@ -57,11 +57,21 @@ class Zaehler(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
         print('on join')
-       
-        
-       
-        x = yield self.call(u'repi.data.select',[20]) # 20 gives the number of values 
+        #liste = []
+
+        x = yield self.call(u'repi.data.select',[100]) # 20 gives the number of values 
         print(x)
+        
+        #x = yield self.call(u'repi.data.select',[10]) # 20 gives the number of values 
+        #liste.extend(x)
+        #len(liste)
+        #rever = liste.reverse()
+        #print(rever)
+        #p = liste.count("a")
+        #print(liste.reverse())
+        #print(liste)
+        #return(liste)
+        #print(y)
         # calculate mean and variance of x.vendor_name
 
     #############
@@ -73,8 +83,6 @@ class Zaehler(ApplicationSession):
 
     def onDisconnect(self):
         self.log.info('transport disconnected')
-
-
 
 
 
