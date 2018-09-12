@@ -65,7 +65,10 @@ class Zaehler(ApplicationSession):
             raise e
         #hhier muss code für subscriptioon hin
 
-        
+
+        def write_msg_simple(msg):
+            print("event for write_msg received: {}".format(msg))
+       #     print("event for write_msg received: {}".format(details))
         def write_msg(msg):
             print("event for write_msg received: {}".format(msg))
 
@@ -87,9 +90,17 @@ class Zaehler(ApplicationSession):
         
             return(1)
 
-        sub = yield self.subscribe(write_msg, u'repi.data.simple.gaussian')
+
+        # wildcars
+
+        session.subscribe(u'repi.data.elapsed_time.u'repi.data.extrema, monitorStatusUpdates, { match: "wildcard" });
+
+        sub = yield self.subscribe(write_msg_simple, u'repi.data.elapsed_time')
         print("procedure write_msg() 'write to the data base'")
 
+
+        sub = yield self.subscribe(write_msg_simple, u'repi.data.extrema')
+        print("procedure write_msg() 'write to the data base'")
 
 
 
@@ -121,7 +132,8 @@ class Zaehler(ApplicationSession):
 
         reg = yield self.register(read_msg, u'repi.data.select')
         print("procedure read_msg() read to the data base")
-        
+ 
+
         
 
 

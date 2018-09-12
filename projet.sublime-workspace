@@ -3,14 +3,89 @@
 	{
 		"selected_items":
 		[
+			[
+				"sub",
+				"subscriber"
+			],
+			[
+				"maxi",
+				"maximun"
+			],
+			[
+				"mi",
+				"minimun"
+			],
+			[
+				"playe",
+				"playerss_age"
+			],
+			[
+				"vendor",
+				"vendor_id"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"contents": "# projet\n\nDas ist mein eigenes Spielprojekt\n\njetzt versuche ich SQL mit Posgres python und crossbar\n\n crossbar - python - postgres\n nous suposons ici que notre base de données se touve ailleurs que dans notre machine ie nous pouvons pas faire d'acces direct. Nous avons donc besoin d'un crossbar.\n\na) le travail ici consiste  a recuperer le temps de CPU lors de l'exercutio d'un programme avec publisher de crossbar et inserer dans une base  de donner avec subscriber.\n\n1 - créer la base de données et y charger des données (cf create.py, insert.py)\n2 - programmer le publisher en lui indiquant le message a publier (cf puconn.py) \n3 - programmer le subscriber en le connecter aavec la base de données\n\ns'assurer que publisher et subscriber sont connecter au meme localhost ici le 8080 ie celui du crossbar\nla fonction qui calcule le cpu time se trouve dans publisher.\n\nb) le travail ici consiste a recuperer les données dans une base de données. nous avons besoin de recuperer les données dans une base pour ensuite l'etudier\n\n1- programmer la fonction read_write  qui lire et ecrire dans la base de données (cf read_write.py)\n2- programmer la fonction call_select qui appel la fonction read_write pour executer\n\ncall_select effectue un appel. cependant elle doit avoir le meme topic que la fonction read_write ici \"u'repi.data.select'\" \ndans le code read_write, nous avons deux fonctions precise read et write. Write ecris dans notre base de données et read y lit. Cependant il est preferable que read read aient des topic differents. on sous entend ici le faire qu'ils peuvent avoir le meme topic.\nLa fonction read sera appeler par une autre fonction pour etre executer ici call_select et sur quoi ils doivent avoir le meme topic.\n\n\nC) ecrire deux publisher avec une subscriber 10.08.\napres chaque  @inlineCallbacks doit avoir un yield.\nnous avons ici deux fonctions: timeElapsed et extrema et voulons faire deux  publisher sur le mm subscriber (cf asynpublish.py)\n(u'repi.data.elapsed_time', my_payload)  und (u'repi.data.extrema', my_payload) nous montre que le topic des deux fonctions doivent etre differents. dans l'appel avec LoopingCall nous indiquons le temps à alouer a chacun fonction.\n\nD) comment ecrire une fonction dans une base de donner et l'appeler avec python\necrire la fonction et s'assurer que cette derniere fonctionne dans la base de donner et on pourra l'appeler comme suit dans python\ncur.execute(\"\"\"select vendors_number()\"\"\") (cf functionCall.py). vendors_number ici est le nom de la fonction dans python.\n\nE) Etant donner une fonction prenant des parametres ecrite dans une base de données, comment appeler cette derniere dans python en passant ses argument?\n\n\n\nE) il est question ici de remplacer les deux publisher de asynpublish.py par un seul avec l'aide de  wildscards\n",
+			"file": "SQL_python/README.md",
+			"file_size": 1752,
+			"file_write_time": 131806969060852960,
+			"settings":
+			{
+				"buffer_size": 2803,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "import psycopg2\nimport sys\nfor eachArg in sys.argv:   \n    \n\n    \n#import sys\n#for arg in sys.argv:\n    #print(arg)\nconn = psycopg2.connect(\"dbname='postgres' user='postgres' host='localhost' password='dbpass'\")\ncur = conn.cursor()\n\n#cur.execute(\"\"\"select vendors_number()\"\"\")\n\np_max= int(sys.argv[1])\n#print(p_max)\ncur.execute(\"\"\"select players_young(%s)\"\"\",[p_max])\n#cur.execute(\"\"\"select players_young(\"\"\"+p_max+\"\"\")\"\"\")\nx= cur.fetchone()[0]\n#y = cur.fetchone()[0]\nprint(x)\n#print(y)\n\n#cursor.execute(\"INSERT INTO table VALUES (%s, %s, %s)\", (var1, var2, var3))\n",
+			"file": "SQL_python_crossbar/crossbarDataBasePython/functionCallSql.py",
+			"file_size": 573,
+			"file_write_time": 131810554766421162,
+			"settings":
+			{
+				"buffer_size": 565,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"file": "SQL_python/DataBase_function",
+			"file_size": 0,
+			"file_write_time": 131810469018467661,
 			"settings":
 			{
 				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "SQL_python_crossbar/crossbarDataBasePython/wildcard_readWrite.py",
+			"settings":
+			{
+				"buffer_size": 7460,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "import psycopg2\n#from config import config\n \n \ndef create_tables():\n   \n    commands = (\n        \"\"\"\n        CREATE TABLE vendeur (\n            vendeur_id SERIAL PRIMARY KEY,\n            vendeur_name VARCHAR(255) NOT NULL\n        )\n        \"\"\"\n        ,\n        \"\"\" CREATE TABLE parts (\n                part_id SERIAL PRIMARY KEY,\n                part_name VARCHAR(255) NOT NULL\n                )\n        \"\"\"\n        ,\n        \"\"\"\n        CREATE TABLE part_connecteur (\n                part_id INTEGER PRIMARY KEY,\n                file_extension VARCHAR(5) NOT NULL,\n                drawing_data BYTEA NOT NULL,\n                FOREIGN KEY (part_id)\n                REFERENCES parts (part_id)\n                ON UPDATE CASCADE ON DELETE CASCADE\n        )\n        \"\"\",\n        \"\"\"\n       CREATE TABLE membres (\n                age INTEGER ,\n                nom  VARCHAR(5) NOT NULL,\n                taile  numeric NOT NULL,\n                \n                ON UPDATE CASCADE ON DELETE CASCADE\n        )\n        \"\"\"\n        ,\n        \"\"\"\n        CREATE TABLE vendeur_parts (\n                vendor_id INTEGER NOT NULL,\n                part_id INTEGER NOT NULL,\n                PRIMARY KEY (vendor_id , part_id),\n                FOREIGN KEY (vendor_id)\n                    REFERENCES vendors (vendor_id)\n                    ON UPDATE CASCADE ON DELETE CASCADE,\n                FOREIGN KEY (part_id)\n                    REFERENCES parts (part_id)\n                    ON UPDATE CASCADE ON DELETE CASCADE\n        )\n        \"\"\")\n\n# def insert_tables():\n#     commands = (\n#         cur.execute(\"INSERT INTO membres(age,nom,taille) VALUES(21,'Dupont',1.83)\")\n#         cur.execute(\"INSERT INTO membres(age,nom,taille) VALUES(15,'Blumâr',1.57)\")\n#         cur.execute(\"INSERT Into membres(age,nom,taille) VALUES(18,'Özémir',1.69)\")\n#         )\n\n\n    conn = None\n    try:\n        \n        conn = psycopg2.connect(\"dbname='postgres' user='postgres' host='localhost' password='dbpass'\")\n        cur = conn.cursor()\n      \n        for command in commands:\n            cur.execute(command)\n     \n        cur.close()\n        \n        conn.commit()\n    except (Exception, psycopg2.DatabaseError) as error:\n        print(error)\n    finally:\n        if conn is not None:\n            conn.close()\n \n \nif __name__ == '__main__':\n    create_tables()\n\n\n\n\n\n\n\n\n\n",
+			"file": "SQL_python_crossbar/DataBasePython/create_tab_animal.py",
+			"file_size": 0,
+			"file_write_time": 131810598003011427,
+			"settings":
+			{
+				"buffer_size": 2338,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "SQL_python_crossbar/DataBasePython/createTab.py",
+			"settings":
+			{
+				"buffer_size": 2316,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		}
@@ -26,6 +101,22 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"git ",
+				"git: status"
+			],
+			[
+				"git",
+				"git: status"
+			],
+			[
+				"git stat",
+				"git: status"
+			],
+			[
+				"auto",
+				"AutoPEP8: Format Code"
+			],
 			[
 				"gitgutter",
 				"GitGutter: Support Info"
@@ -61,23 +152,30 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/Users/cartelle/git/projet"
-	],
 	"file_history":
 	[
+		"/Users/cartelle/git/projet/SQL_python_crossbar/crossbarDataBasePython/wildcard_sub.py",
+		"/Users/cartelle/git/projet/SQL_python_crossbar/crossbarDataBasePython/read_Write.py",
+		"/Users/cartelle/git/projet/SQL_python/asynpublish.py",
+		"/Users/cartelle/git/projet/SQL_python/call_select.py",
+		"/Users/cartelle/git/projet/SQL_python/read_Write.py",
+		"/Users/cartelle/git/projet/SQL_python/functionCallSql.py",
+		"/Users/cartelle/git/projet/SQL_python/puconn.py",
+		"/Users/cartelle/git/projet/SQL_python/asyn_publish.py",
+		"/Users/cartelle/git/projet/SQL_python/subconn.py",
+		"/Users/cartelle/git/projet/README.md",
+		"/Users/cartelle/git/projet/SQL_python/README.md",
 		"/Users/cartelle/Downloads/google-cloud-sdk/install.sh",
 		"/Users/cartelle/git/REpi/front_end/README.md",
 		"/Users/cartelle/git/REpi/front_end/Dockerfile"
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 22.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 101.0,
 		"where_history":
 		[
 		]
@@ -87,6 +185,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			" \n",
+			"onhello",
+			"sub",
+			"Logger",
+			"reactor",
+			"LoopingCall",
+			"datetime",
+			"sleep"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -104,11 +210,74 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "SQL_python/README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2687,
+								2687
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"git_gutter_is_enabled": false,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "SQL_python_crossbar/crossbarDataBasePython/functionCallSql.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 565,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								351,
+								351
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "SQL_python/DataBase_function",
 					"semi_transient": false,
 					"settings":
 					{
@@ -125,9 +294,44 @@
 						],
 						"settings":
 						{
-							"default_dir": "/Users/cartelle/Downloads/google-cloud-sdk",
 							"git_gutter_is_enabled": false,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"open_with_edit": true,
 							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "SQL_python_crossbar/crossbarDataBasePython/wildcard_readWrite.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7460,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4073,
+								4073
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"open_with_edit": true,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -135,17 +339,82 @@
 					},
 					"stack_index": 0,
 					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "SQL_python_crossbar/DataBasePython/create_tab_animal.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2338,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								252,
+								252
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"open_with_edit": true,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "SQL_python_crossbar/DataBasePython/createTab.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2316,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								2311
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/cartelle/git/projet",
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 501.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 22.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 34.0
 	},
 	"layout":
 	{
@@ -170,7 +439,19 @@
 		]
 	},
 	"menu_visible": true,
+	"output.GitSavvy":
+	{
+		"height": 96.0
+	},
+	"output.autopep8":
+	{
+		"height": 96.0
+	},
 	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
 	{
 		"height": 0.0
 	},
@@ -178,7 +459,7 @@
 	"project": "projet.sublime-project",
 	"replace":
 	{
-		"height": 0.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
