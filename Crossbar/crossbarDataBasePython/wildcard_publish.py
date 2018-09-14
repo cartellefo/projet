@@ -61,63 +61,58 @@ class Zaehler(ApplicationSession):
         print('on join')
 
         @inlineCallbacks
-        def _timeElapsed(): # fonction to calculated the cpu time
+        def _timeElapsed():  # fonction to calculated the cpu time
             start = time.time()
             print(' please give me the CPU time')
             end = time.time()
-            elapsed = end - start # cpu time 
+            elapsed = end - start  # cpu time
             # my_payload is the data to published
             my_payload = {
-                         'tsp': datetime.utcnow().isoformat(), 
-                         'piid': 'none', 
-                         'elapsed': elapsed
-                         }
+                'tsp': datetime.utcnow().isoformat(),
+                'piid': 'none',
+                'elapsed': elapsed
+            }
 
             print('sending payload:  {}'.format(my_payload))
             yield self.publish(u'repi.data.elapsed_time', my_payload)
-         #   yield sleep(1)
+            # yield sleep(1)
             return
-        
-
 
         @inlineCallbacks
-        def _extrema(): 
+        def _extrema():
             start = time.time()
             print('mean, variance, maximun and minimun')
-            x = numpy.random.normal(0,1,100)
+            x = numpy.random.normal(0, 1, 100)
             print(x)
             minimun = min(x)
-            maximun =max(x)
+            maximun = max(x)
             print(min(x))
             mean = 1
-            variance = 2 #variance(x)
-            extrema= [minimun,maximun,mean, variance]
+            variance = 2  # variance(x)
+            extrema = [minimun, maximun, mean, variance]
+            end = time.time()
+            elapsed = end - start  # cpu time
             my_payload = {
-                        'tsp': datetime.utcnow().isoformat(), 
-                        'piid': 'none', 
+                'tsp': datetime.utcnow().isoformat(),
+                'piid': 'none',
+                        'elapsed': elapsed,
                         'extrema': extrema
-                        }    
+            }
 
             print('sending payload:  {}'.format(my_payload))
-
-
-            
 
             yield self.publish(u'repi.data.extrema', my_payload)
             print('sent.')
             return
 
-
-#################################################
-
         self.lc1 = LoopingCall(_timeElapsed)
-        self.lc1.start(1)  
-    
+        self.lc1.start(1)
+
         self.lc2 = LoopingCall(_extrema)
-        self.lc2.start(3) 
+        self.lc2.start(3)
 
         yield time.sleep(1)
-       
+
     def onLeave(self, details):
         self.log.info('session left: {}'.format(details))
 
@@ -127,14 +122,15 @@ class Zaehler(ApplicationSession):
         self.log.info('transport disconnected')
 
 
-
 if __name__ == '__main__':
 
     print('parse command line parameters')
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--debug', action='store_true',help='Enable debug output.')
-    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws', help='The router URL (default: "ws://104.199.76.81:8080/ws").')
-   
+    parser.add_argument('-d', '--debug', action='store_true',
+                        help='Enable debug output.')
+    parser.add_argument('--url', dest='url', type=six.text_type, default=u'ws://localhost:8080/ws',
+                        help='The router URL (default: "ws://104.199.76.81:8080/ws").')
+
     parser.add_argument('--realm', dest='realm', type=six.text_type,
                         default='realm1', help='The realm to join (default: "realm1").')
 
