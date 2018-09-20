@@ -25,7 +25,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
-#import psycopg2
+# import psycopg2
 import time
 import os
 import argparse
@@ -40,6 +40,7 @@ from datetime import datetime
 from twisted.internet.task import LoopingCall
 from twisted.internet import reactor
 from twisted.logger import Logger
+from random import randint
 
 
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
@@ -112,6 +113,19 @@ class Zaehler(ApplicationSession):
         self.lc2.start(3)
 
         yield time.sleep(1)
+        
+
+        # @inlineCallbacks
+        # def age():
+        #     age =  randint(20,60)
+        #      print('age:  {}'.format(age))
+        #     yield self.publish(u'repi.data.age', age)
+        #     # yield sleep(1)
+        #     return
+
+
+
+
 
     def onLeave(self, details):
         self.log.info('session left: {}'.format(details))
@@ -120,6 +134,9 @@ class Zaehler(ApplicationSession):
 
     def onDisconnect(self):
         self.log.info('transport disconnected')
+
+
+     
 
 
 if __name__ == '__main__':

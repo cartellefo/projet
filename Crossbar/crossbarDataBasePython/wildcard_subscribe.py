@@ -109,6 +109,14 @@ class Zaehler(ApplicationSession):
             conn.commit()
             return(1)
 
+       def write_msg(msg):
+            print("event for write_msg received: {}".format(msg))
+            sql = """INSERT INTO employee (empl_name) VALUES(%s) """
+            print(sql % str(msg['elapsed']))
+            cur.execute(sql, (msg['elapsed'],))
+            # id = cur.fetchone()[0]
+            conn.commit()
+            return(1)
 
 
 

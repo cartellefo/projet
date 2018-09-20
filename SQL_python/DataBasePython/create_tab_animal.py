@@ -27,6 +27,7 @@ def randomDate(start, end,):
 
 f = open("animal.txt", "w")
 
+
 def create_tables():
 
     sql = """DROP TABLE animal"""
@@ -108,7 +109,7 @@ def insert_animal_list_file(Nmax):
     #f = StringIO("42\tfoo\n74\tbar\n")
     # with open('animal.csv', 'r') as f:
         # print(Nmax)
-    
+
     espece = ['dog', 'puppy', 'cat', 'kitten', 'owl', 'owlet', 'bird', 'parrot', 'turtle', 'tortoise', 'mouse', 'lizard', 'horse', 'pork', 'hen', 'turkey cock'
               'flock', 'lamb', 'fly', 'elefant']
     nouns = ['people', 'history', 'way', 'art', 'world', 'information', 'map', 'two', 'family', 'government', 'health',
@@ -128,10 +129,10 @@ def insert_animal_list_file(Nmax):
             v+"','"+s+"','"+d+"','"+n+"',"+c+",'none');"
         #f = open("animal.txt", "a")
         f.write("\n" + stmt)
- 
-      #print(stmt)
-#f.close() 
- 
+
+      # print(stmt)
+# f.close()
+
 
 # pg_dump  -f postgres > sql_file
 # pg_dump [connection-option...] [option...] [dbname]
